@@ -31,6 +31,8 @@ body {
     overflow-x: hidden;
 }
 
+
+
 /* Background Effects */
 .overlay-glow {
     position: fixed;
@@ -43,20 +45,81 @@ body {
     z-index: 2; /* moved above video */
 }
 
-/* Cinematic Sequence Canvas */
-.cinematic-bg {
-    position: fixed;
-    top: 50%;
-    left: 50%;
+/* Loading Graphic */
+.loader-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-left-color: var(--accent-red);
+    border-radius: 50%;
+    animation: spinRed 1s linear infinite;
+}
+
+@keyframes spinRed {
+    100% { transform: rotate(360deg); }
+}
+
+/* Dragon Sequence Container */
+.dragon-sequence-container {
     width: 100vw;
     height: 100vh;
-    transform: translate(-50%, -50%);
+    background: #000;
+    position: relative;
+    overflow: hidden;
+    z-index: 5;
+}
+
+/* Overlay to darken the dragon video/canvas */
+.dragon-sequence-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 2; /* Above the canvas (z:1), below the text (z:10) */
+    pointer-events: none;
+}
+
+/* Cinematic Sequence Canvas */
+.cinematic-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     object-fit: cover;
     z-index: 1;
-    opacity: 0.3; /* Base dimness */
+    opacity: 1; /* 100% unadulterated visibility per user request */
     pointer-events: none;
-    /* Apply a deep cinematic filter so portfolio text stays readable overlaying the artwork */
-    filter: brightness(0.4) contrast(1.1);
+    transform-origin: center center; /* Critical for zooming perfectly into screen */
+    /* Removed the darkness filter to keep original vibrant artwork */
+    filter: brightness(1) contrast(1.1);
+}
+
+/* Main Portfolio Content Phase 2 */
+.portfolio-main {
+    position: relative;
+    z-index: 10;
+    background: transparent;
+    padding-top: 100px; /* buffer after scroll release */
+}
+
+/* New Animated Background exclusively behind projects */
+.animated-dark-bg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -1;
+    background: radial-gradient(circle at 50% 50%, #151515 0%, #050505 80%);
+    background-size: 200% 200%;
+    animation: slowPan 15s ease-in-out infinite alternate;
+}
+
+@keyframes slowPan {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
 }
 
 /* Custom Cursor */
@@ -69,7 +132,7 @@ body {
     top: 0;
     left: 0;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 99999;
     mix-blend-mode: difference;
     transition: width 0.2s, height 0.2s, background-color 0.2s;
 }
@@ -185,9 +248,10 @@ a:hover {
     justify-content: space-between;
     align-items: center;
     padding: 2rem 5%;
-    position: absolute;
+    position: fixed;
+    top: 0; left: 0;
     width: 100%;
-    z-index: 20;
+    z-index: 10000;
 }
 .logo {
     font-weight: 900;
@@ -196,6 +260,13 @@ a:hover {
     display: flex;
     align-items: center;
     gap: 10px;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.3s, transform 0.3s;
+}
+.logo:hover {
+    color: var(--accent-red);
+    transform: scale(1.05);
 }
 .logo .icon {
     color: var(--accent-red);
@@ -209,37 +280,119 @@ a:hover {
     text-transform: uppercase;
 }
 
+/* ===== PAGE TRANSITION OVERLAY (SMX-style) ===== */
+.page-transition-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: #000;
+    z-index: 65000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease;
+}
+
+.page-transition-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.transition-content {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.transition-label {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 8px;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+.transition-percent {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(4rem, 12vw, 8rem);
+    font-weight: 400;
+    color: var(--accent-red);
+    line-height: 1;
+}
+
+.transition-bar-track {
+    width: 60%;
+    max-width: 500px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.transition-bar {
+    width: 0%;
+    height: 100%;
+    background: var(--accent-red);
+    border-radius: 4px;
+    box-shadow: 0 0 15px rgba(229, 9, 20, 0.6), 0 0 30px rgba(229, 9, 20, 0.3);
+    transition: width 0.05s linear;
+}
+
 /* Hero Section */
 .hero {
     height: 100vh;
+    width: 100vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     padding: 0 20px;
-    position: relative;
+    position: absolute;
+    top: 0; left: 0;
     z-index: 10;
+    pointer-events: none; /* Let GSAP scrub clicks pass through */
+}
+
+.hero-quote {
+    position: absolute; /* Kept absolute so the main title and subtitle stay perfectly centered */
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent-red);
+    text-align: center;
+    max-width: 80vw;
+    line-height: 1.2;
+    opacity: 1; /* Displayed initially */
+    transform-origin: center center;
+    text-shadow: 0 5px 20px rgba(0,0,0,0.8);
 }
 
 .hero-title {
-    font-size: clamp(3rem, 10vw, 8rem);
-    letter-spacing: -3px;
-    line-height: 1;
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(4rem, 15vw, 12rem);
+    letter-spacing: -0.02em;
+    line-height: 0.85;
     margin-bottom: 2rem;
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeUp 1s forwards cubic-bezier(0.1, 0.9, 0.2, 1) 0.2s;
+    font-weight: 400;
+    color: var(--accent-red);
+    opacity: 0; /* GSAP Managed */
+    transform-origin: center center;
 }
 
 .hero-subtitle {
-    font-size: clamp(0.75rem, 2vw, 1.25rem);
-    font-weight: 600;
-    letter-spacing: 6px;
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(1rem, 3vw, 1.8rem);
+    font-weight: 400;
+    letter-spacing: 0.15em;
     color: var(--text-muted);
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeUp 1s forwards cubic-bezier(0.1, 0.9, 0.2, 1) 0.5s;
+    opacity: 0; /* GSAP Managed */
+    transform-origin: center center;
 }
 
 /* Main Content Structure */
@@ -414,24 +567,337 @@ a:hover {
     border-bottom-right-radius: 12px;
 }
 
-/* About Section */
-.about-section {
-    padding: 8rem 0;
-    border-top: 1px solid var(--border-color);
+/* ===== CINEMATIC ABOUT SECTION (DareDevil-Inspired) ===== */
+.about-cinematic {
+    position: relative;
+    width: 100vw;
+    min-height: 100vh;
+    overflow: hidden;
+    z-index: 10;
+    background: #000;
 }
 
-.about-content {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
+.about-viewport {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.about-content p {
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
-    font-weight: 600;
-    letter-spacing: -1px;
-    line-height: 1.4;
+/* Red Atmospheric Glow */
+.about-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70vw;
+    height: 70vh;
+    background: radial-gradient(ellipse, rgba(229, 9, 20, 0.25) 0%, rgba(229, 9, 20, 0.08) 40%, transparent 70%);
+    border-radius: 50%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    filter: blur(80px);
+}
+
+/* Massive Background Text Layer */
+.about-bg-text-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+}
+
+.bg-text-group {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 0.85;
+    opacity: 0;
+}
+
+.bg-text-top,
+.bg-text-bottom {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(5rem, 16vw, 18rem);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 0.9;
+    white-space: nowrap;
+}
+
+.bg-text-top {
+    color: rgba(229, 9, 20, 0.12);
+    -webkit-text-stroke: 1.5px rgba(229, 9, 20, 0.18);
+}
+
+.bg-text-bottom {
+    color: rgba(255, 255, 255, 0.06);
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.1);
+}
+
+/* Photo Layer — In Front of Text */
+.about-photos-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+}
+
+.about-photo {
+    position: absolute;
+    max-height: 85vh;
+    max-width: 50vw;
+    object-fit: contain;
+    filter: 
+        drop-shadow(0 0 80px rgba(229, 9, 20, 0.35))
+        drop-shadow(0 0 120px rgba(229, 9, 20, 0.15))
+        drop-shadow(0 30px 60px rgba(0, 0, 0, 0.9));
+    transform-origin: center center;
+}
+
+.portrait-img {
+    opacity: 0;
+}
+
+.fullbody-img {
+    opacity: 0;
+}
+
+/* Info Layer — Sits in front of photos */
+.about-info-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 4;
+    pointer-events: none;
+}
+
+.info-panel {
+    position: absolute;
+    opacity: 0;
+}
+
+/* Phase 1: Bio */
+.panel-bio {
+    bottom: 14%;
+    left: 8%;
+}
+
+.about-tagline {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(0.9rem, 1.8vw, 1.4rem);
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    margin-bottom: 0.25rem;
+}
+
+.about-tagline-bold {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(1.1rem, 2.2vw, 1.7rem);
     color: var(--text-primary);
+    font-weight: 900;
+    letter-spacing: -0.5px;
+}
+
+/* Phase 2: Skills */
+.panel-skills {
+    bottom: 12%;
+    right: 8%;
+    display: flex;
+    gap: 3rem;
+    pointer-events: auto;
+}
+
+.skill-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.stat-number {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    color: var(--accent-red);
+    letter-spacing: 2px;
+}
+
+.stat-label {
+    font-size: 0.65rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: var(--text-muted);
+}
+
+/* Phase 3: CTA */
+.panel-cta {
+    bottom: 18%;
+    left: 8%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    pointer-events: auto;
+}
+
+.cta-circle {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    border: 2px solid rgba(229, 9, 20, 0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.1, 0.9, 0.2, 1);
+    cursor: none;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.cta-inner-text {
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    z-index: 2;
+    position: relative;
+}
+
+.cta-arrow {
+    font-size: 1.2rem;
+    z-index: 2;
+    position: relative;
+    transition: transform 0.3s;
+}
+
+.cta-circle::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0%;
+    height: 0%;
+    background: var(--accent-red);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.5s cubic-bezier(0.1, 0.9, 0.2, 1);
+    z-index: 0;
+}
+
+.cta-circle:hover {
+    color: #fff;
+    border-color: var(--accent-red);
+    box-shadow: 0 0 50px rgba(229, 9, 20, 0.5), 0 0 100px rgba(229, 9, 20, 0.2);
+    transform: scale(1.08);
+}
+
+.cta-circle:hover::before {
+    width: 140%;
+    height: 140%;
+}
+
+.cta-circle:hover .cta-arrow {
+    transform: translateX(4px);
+}
+
+.cta-subtext {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+
+/* Particle Canvas */
+.about-particles-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* Film Grain Overlay */
+.about-grain-overlay {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    z-index: 6;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grainDrift 8s steps(10) infinite;
+}
+
+@keyframes grainDrift {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-2%, -3%); }
+    30% { transform: translate(3%, 1%); }
+    50% { transform: translate(-1%, 3%); }
+    70% { transform: translate(2%, -2%); }
+    90% { transform: translate(-3%, 1%); }
+}
+
+/* Scroll Indicator */
+.about-scroll-indicator {
+    position: absolute;
+    bottom: 3%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.5;
+}
+
+.about-scroll-indicator span {
+    font-size: 0.6rem;
+    font-weight: 900;
+    letter-spacing: 4px;
+    color: var(--text-muted);
+}
+
+.scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--accent-red), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+    50% { opacity: 1; transform: scaleY(1); }
 }
 
 /* Footer */
@@ -597,9 +1063,6 @@ a:hover {
 }
 
 /* Utilities */
-.fade-target {
-    /* GSAP handles opacity, leaving empty */
-}
 
 @keyframes fadeUp {
     to {
@@ -644,5 +1107,47 @@ a:hover {
     }
     .navbar .links {
         display: none; /* simple mobile fallback */
+    }
+
+    /* Cinematic About — Mobile */
+    .bg-text-top,
+    .bg-text-bottom {
+        font-size: clamp(3rem, 14vw, 7rem);
+    }
+
+    .about-photo {
+        max-height: 65vh;
+        max-width: 85vw;
+    }
+
+    .panel-bio {
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        width: 90%;
+        bottom: 10%;
+    }
+
+    .panel-skills {
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 8%;
+        gap: 1.5rem;
+    }
+
+    .panel-cta {
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 12%;
+    }
+
+    .cta-circle {
+        width: 100px;
+        height: 100px;
+    }
+
+    .cta-inner-text {
+        font-size: 0.65rem;
     }
 }
