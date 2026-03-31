@@ -51,7 +51,7 @@ body {
 .cursor.hovering {
     width: 60px;
     height: 60px;
-    background-color: rgba(255,255,255,1);
+    background-color: rgba(255, 255, 255, 1);
     mix-blend-mode: difference;
 }
 
@@ -62,10 +62,11 @@ body {
     align-items: center;
     padding: 2rem 5%;
     position: fixed;
-    top: 0; left: 0;
+    top: 0;
+    left: 0;
     width: 100%;
     z-index: 10000;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
 }
 
 .nav-back {
@@ -166,10 +167,23 @@ body {
 }
 
 @keyframes flameFlicker {
-    0%, 100% { text-shadow: 0 0 10px rgba(255, 42, 42, 0.8), 0 0 30px rgba(255, 42, 42, 0.5), 0 0 60px rgba(255, 100, 0, 0.3); }
-    25% { text-shadow: 0 0 15px rgba(255, 42, 42, 1), 0 0 40px rgba(255, 42, 42, 0.6), 0 0 80px rgba(255, 100, 0, 0.4); }
-    50% { text-shadow: 0 0 8px rgba(255, 42, 42, 0.7), 0 0 25px rgba(255, 42, 42, 0.4), 0 0 50px rgba(255, 100, 0, 0.25); }
-    75% { text-shadow: 0 0 20px rgba(255, 42, 42, 1), 0 0 45px rgba(255, 60, 0, 0.7), 0 0 90px rgba(255, 100, 0, 0.4); }
+
+    0%,
+    100% {
+        text-shadow: 0 0 10px rgba(255, 42, 42, 0.8), 0 0 30px rgba(255, 42, 42, 0.5), 0 0 60px rgba(255, 100, 0, 0.3);
+    }
+
+    25% {
+        text-shadow: 0 0 15px rgba(255, 42, 42, 1), 0 0 40px rgba(255, 42, 42, 0.6), 0 0 80px rgba(255, 100, 0, 0.4);
+    }
+
+    50% {
+        text-shadow: 0 0 8px rgba(255, 42, 42, 0.7), 0 0 25px rgba(255, 42, 42, 0.4), 0 0 50px rgba(255, 100, 0, 0.25);
+    }
+
+    75% {
+        text-shadow: 0 0 20px rgba(255, 42, 42, 1), 0 0 45px rgba(255, 60, 0, 0.7), 0 0 90px rgba(255, 100, 0, 0.4);
+    }
 }
 
 .quote-credit {
@@ -209,10 +223,21 @@ body {
     z-index: 0;
 }
 
-.glow-red { background: radial-gradient(ellipse, rgba(229, 9, 20, 0.2) 0%, transparent 70%); }
-.glow-blue { background: radial-gradient(ellipse, rgba(59, 130, 246, 0.15) 0%, transparent 70%); }
-.glow-purple { background: radial-gradient(ellipse, rgba(168, 85, 247, 0.15) 0%, transparent 70%); }
-.glow-gold { background: radial-gradient(ellipse, rgba(202, 138, 4, 0.15) 0%, transparent 70%); }
+.glow-red {
+    background: radial-gradient(ellipse, rgba(229, 9, 20, 0.2) 0%, transparent 70%);
+}
+
+.glow-blue {
+    background: radial-gradient(ellipse, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+}
+
+.glow-purple {
+    background: radial-gradient(ellipse, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+}
+
+.glow-gold {
+    background: radial-gradient(ellipse, rgba(202, 138, 4, 0.15) 0%, transparent 70%);
+}
 
 /* ===== PANEL INNER LAYOUTS ===== */
 .about-panel-inner {
@@ -265,11 +290,21 @@ body {
     text-align: right;
 }
 
-.direction-left .split-heading-side { order: 1; }
-.direction-left .split-content-side { order: 2; }
+.direction-left .split-heading-side {
+    order: 1;
+}
 
-.direction-right .split-content-side { order: 1; }
-.direction-right .split-heading-side { order: 2; }
+.direction-left .split-content-side {
+    order: 2;
+}
+
+.direction-right .split-content-side {
+    order: 1;
+}
+
+.direction-right .split-heading-side {
+    order: 2;
+}
 
 /* ===== TYPOGRAPHY ===== */
 .panel-label {
@@ -385,32 +420,49 @@ body {
 }
 
 .ring-1 {
-    width: 100px; height: 100px;
+    width: 100px;
+    height: 100px;
     animation: orbSpin 8s linear infinite;
     border-color: rgba(229, 9, 20, 0.4);
 }
 
 .ring-2 {
-    width: 140px; height: 140px;
+    width: 140px;
+    height: 140px;
     animation: orbSpin 12s linear infinite reverse;
     border-color: rgba(229, 9, 20, 0.2);
 }
 
 .ring-3 {
-    width: 180px; height: 180px;
+    width: 180px;
+    height: 180px;
     animation: orbSpin 16s linear infinite;
     border-color: rgba(229, 9, 20, 0.1);
     border-style: dashed;
 }
 
 @keyframes orbPulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(229, 9, 20, 0.8), 0 0 60px rgba(229, 9, 20, 0.5), 0 0 100px rgba(229, 9, 20, 0.3); }
-    50% { transform: scale(1.1); box-shadow: 0 0 50px rgba(229, 9, 20, 1), 0 0 90px rgba(229, 9, 20, 0.6), 0 0 140px rgba(229, 9, 20, 0.4); }
+
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 30px rgba(229, 9, 20, 0.8), 0 0 60px rgba(229, 9, 20, 0.5), 0 0 100px rgba(229, 9, 20, 0.3);
+    }
+
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 50px rgba(229, 9, 20, 1), 0 0 90px rgba(229, 9, 20, 0.6), 0 0 140px rgba(229, 9, 20, 0.4);
+    }
 }
 
 @keyframes orbSpin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* ===== EXPERIENCE CARD ===== */
@@ -484,7 +536,7 @@ body {
 .achievement-card:hover {
     transform: translateY(-8px) scale(1.02);
     border-color: rgba(202, 138, 4, 0.4);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(202, 138, 4, 0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(202, 138, 4, 0.1);
 }
 
 .achievement-icon {
@@ -534,12 +586,31 @@ body {
 }
 
 @keyframes grainDrift {
-    0%, 100% { transform: translate(0, 0); }
-    10% { transform: translate(-2%, -3%); }
-    30% { transform: translate(3%, 1%); }
-    50% { transform: translate(-1%, 3%); }
-    70% { transform: translate(2%, -2%); }
-    90% { transform: translate(-3%, 1%); }
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    10% {
+        transform: translate(-2%, -3%);
+    }
+
+    30% {
+        transform: translate(3%, 1%);
+    }
+
+    50% {
+        transform: translate(-1%, 3%);
+    }
+
+    70% {
+        transform: translate(2%, -2%);
+    }
+
+    90% {
+        transform: translate(-3%, 1%);
+    }
 }
 
 /* ===== FOOTER ===== */
@@ -586,7 +657,8 @@ body {
 .footer-links a::after {
     content: '';
     position: absolute;
-    bottom: 0; left: 0;
+    bottom: 0;
+    left: 0;
     width: 0%;
     height: 2px;
     background: var(--accent-red);
@@ -684,8 +756,23 @@ body {
         height: 130px;
     }
 
-    .orb-core { width: 40px; height: 40px; }
-    .ring-1 { width: 70px; height: 70px; }
-    .ring-2 { width: 100px; height: 100px; }
-    .ring-3 { width: 130px; height: 130px; }
+    .orb-core {
+        width: 40px;
+        height: 40px;
+    }
+
+    .ring-1 {
+        width: 70px;
+        height: 70px;
+    }
+
+    .ring-2 {
+        width: 100px;
+        height: 100px;
+    }
+
+    .ring-3 {
+        width: 130px;
+        height: 130px;
+    }
 }

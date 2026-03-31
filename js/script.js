@@ -12,8 +12,8 @@ const projectsData = [
             "Expiration and max-use constraints",
             "RESTful API for e-commerce integration"
         ],
-        github: "#",
-        demo: "#",
+        github: "https://github.com/Adityaaafr",
+        demo: "https://github.com/Adityaaafr",
     },
     {
         id: "02",
@@ -28,8 +28,8 @@ const projectsData = [
             "Custom alert triggers on price dips/spikes",
             "Detailed profit/loss analytics"
         ],
-        github: "#",
-        demo: "#",
+        github: "https://github.com/Adityaaafr",
+        demo: "https://github.com/Adityaaafr",
     },
     {
         id: "03",
@@ -44,8 +44,8 @@ const projectsData = [
             "Custom PHP routing for API requests",
             "Mobile-optimized performance"
         ],
-        github: "#",
-        demo: "#",
+        github: "https://github.com/Adityaaafr",
+        demo: "https://github.com/Adityaaafr",
     },
     {
         id: "04",
@@ -71,7 +71,7 @@ const projectsData = [
     const params = new URLSearchParams(window.location.search);
     if (params.get('from') === 'about') {
         document.documentElement.classList.add('from-about');
-        
+
         // Perfection: Pre-hide navbar and other content via style tag to prevent any flash
         const style = document.createElement('style');
         style.id = 'temp-return-style';
@@ -112,8 +112,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Play the intro video
                     introVideo.muted = true;
-                    introVideo.classList.add('playing'); 
-                    
+                    introVideo.classList.add('playing');
+
                     // SAFETY SKIP: Only starts when video begins
                     const safetySkipTimeout = setTimeout(() => {
                         console.log("Intro safety skip triggered");
@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const musicSection = document.getElementById('music-showcase');
         if (musicSection) {
             // Instant scroll and refresh
-            window.scrollTo(0, 0); 
+            window.scrollTo(0, 0);
             musicSection.scrollIntoView({ behavior: 'auto' });
             if (typeof ScrollTrigger !== 'undefined') {
                 ScrollTrigger.refresh();
@@ -179,38 +179,38 @@ document.addEventListener('DOMContentLoaded', () => {
     aboutTriggers.forEach(trigger => {
         if (trigger) {
             trigger.addEventListener('click', (e) => {
-            e.preventDefault();
+                e.preventDefault();
 
-            const overlay = document.getElementById('page-transition-overlay');
-            const bar = document.getElementById('transition-bar');
-            const percentText = document.getElementById('transition-percent');
-            if (!overlay || !bar || !percentText) return;
+                const overlay = document.getElementById('page-transition-overlay');
+                const bar = document.getElementById('transition-bar');
+                const percentText = document.getElementById('transition-percent');
+                if (!overlay || !bar || !percentText) return;
 
-            // Show overlay
-            overlay.classList.add('active');
+                // Show overlay
+                overlay.classList.add('active');
 
-            // Animate loading bar from 0 to 100 over 2 seconds
-            let progress = 0;
-            const totalDuration = 2000; // 2 seconds
-            const intervalTime = 20; // update every 20ms
-            const increment = 100 / (totalDuration / intervalTime);
+                // Animate loading bar from 0 to 100 over 2 seconds
+                let progress = 0;
+                const totalDuration = 2000; // 2 seconds
+                const intervalTime = 20; // update every 20ms
+                const increment = 100 / (totalDuration / intervalTime);
 
-            const loadInterval = setInterval(() => {
-                progress += increment;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(loadInterval);
+                const loadInterval = setInterval(() => {
+                    progress += increment;
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(loadInterval);
 
-                    // Brief pause at 100%, then navigate
-                    setTimeout(() => {
-                        window.location.href = 'about.html';
-                    }, 400);
-                }
+                        // Brief pause at 100%, then navigate
+                        setTimeout(() => {
+                            window.location.href = 'about.html';
+                        }, 400);
+                    }
 
-                const rounded = Math.round(progress);
-                bar.style.width = rounded + '%';
-                percentText.textContent = rounded + '%';
-            }, intervalTime);
+                    const rounded = Math.round(progress);
+                    bar.style.width = rounded + '%';
+                    percentText.textContent = rounded + '%';
+                }, intervalTime);
             });
         }
     });
@@ -355,7 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         trigger: ".dragon-sequence-container",
                         pin: true,
                         scrub: 0.5,          // Reverted to 0.5s for smoother frame rendering
-                        start: "top top",    
+                        start: "top top",
                         end: "+=4000px",
                     }
                 });
@@ -403,13 +403,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             // CRITICAL: Reset scroll to absolute top immediately when the music ritual ends
                             // to ensure the dragon page begins from its topmost starting part.
-                            window.scrollTo(0, 0); 
-                            
+                            window.scrollTo(0, 0);
+
                             // PERFECTION: Finishing the music scroll reveals the dragon page
                             const dragonSection = document.getElementById('dragon-sequence-container');
                             if (dragonSection) {
                                 const navbar = document.querySelector('.navbar');
-                                
+
                                 [dragonSection, navbar].forEach(el => {
                                     if (!el) return;
                                     el.style.display = (el === navbar) ? 'flex' : 'block';
@@ -419,11 +419,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                         el.style.top = '0'; el.style.left = '0'; el.style.width = '100%';
                                     }
                                 });
-                                
+
                                 gsap.to(musicShowcase, { opacity: 0, duration: 1.2, ease: 'power2.inOut' });
-                                gsap.to([dragonSection, navbar], { 
-                                    opacity: 1, 
-                                    duration: 1.8, 
+                                gsap.to([dragonSection, navbar], {
+                                    opacity: 1,
+                                    duration: 1.8,
                                     delay: 0.3,
                                     ease: 'power2.inOut',
                                     stagger: 0.3,
@@ -438,9 +438,9 @@ document.addEventListener('DOMContentLoaded', () => {
                                             dragonSection.style.display = '';
                                         }
                                         if (navbar) navbar.style.display = '';
-                                        
+
                                         // Final top-off scroll reset and refresh
-                                        window.scrollTo(0, 0); 
+                                        window.scrollTo(0, 0);
                                         if (typeof ScrollTrigger !== 'undefined') {
                                             ScrollTrigger.refresh();
                                         }

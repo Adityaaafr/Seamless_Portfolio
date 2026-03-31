@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             quoteTl.from('#panel-quote .quote-flame-wrapper', { y: 50, opacity: 0, duration: 1.2, ease: 'power3.out', immediateRender: false })
-                   .from('#panel-quote .quote-credit', { y: 20, opacity: 0, duration: 0.6, ease: 'power2.out', immediateRender: false }, '-=0.4');
+                .from('#panel-quote .quote-credit', { y: 20, opacity: 0, duration: 0.6, ease: 'power2.out', immediateRender: false }, '-=0.4');
 
             // --- PANEL 1: ABOUT ME (Fade up from center) ---
             const introTl = gsap.timeline({
@@ -134,10 +134,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             introTl.from('#panel-intro .panel-label', { y: 30, opacity: 0, duration: 0.6, ease: 'power2.out', immediateRender: false })
-                   .from('#panel-intro .about-heading', { y: 60, opacity: 0, duration: 0.8, ease: 'power3.out', immediateRender: false }, '-=0.3')
-                   .from('#panel-intro .about-3d-object', { scale: 0.3, opacity: 0, duration: 1, ease: 'back.out(1.7)', immediateRender: false }, '-=0.5')
-                   .from('#panel-intro .panel-glow', { opacity: 0, duration: 1.2, immediateRender: false }, '-=0.8')
-                   .from('#panel-intro .bio-line', { y: 30, opacity: 0, duration: 0.6, stagger: 0.2, ease: 'power2.out', immediateRender: false }, '-=0.6');
+                .from('#panel-intro .about-heading', { y: 60, opacity: 0, duration: 0.8, ease: 'power3.out', immediateRender: false }, '-=0.3')
+                .from('#panel-intro .about-3d-object', { scale: 0.3, opacity: 0, duration: 1, ease: 'back.out(1.7)', immediateRender: false }, '-=0.5')
+                .from('#panel-intro .panel-glow', { opacity: 0, duration: 1.2, immediateRender: false }, '-=0.8')
+                .from('#panel-intro .bio-line', { y: 30, opacity: 0, duration: 0.6, stagger: 0.2, ease: 'power2.out', immediateRender: false }, '-=0.6');
 
             // --- PANEL 2: EARLY DAYS (Slide from LEFT) ---
             const earlyTl = gsap.timeline({
@@ -149,9 +149,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             earlyTl.from('#panel-early .panel-label', { x: -100, opacity: 0, duration: 0.5, ease: 'power2.out', immediateRender: false })
-                   .from('#panel-early .about-heading', { x: -200, opacity: 0, duration: 0.8, ease: 'power3.out', immediateRender: false }, '-=0.3')
-                   .from('#panel-early .panel-glow', { opacity: 0, duration: 1.2, immediateRender: false }, '-=0.6')
-                   .from('#panel-early .bullet-item', { x: -100, opacity: 0, duration: 0.6, stagger: 0.15, ease: 'power2.out', immediateRender: false }, '-=0.5');
+                .from('#panel-early .about-heading', { x: -200, opacity: 0, duration: 0.8, ease: 'power3.out', immediateRender: false }, '-=0.3')
+                .from('#panel-early .panel-glow', { opacity: 0, duration: 1.2, immediateRender: false }, '-=0.6')
+                .from('#panel-early .bullet-item', { x: -100, opacity: 0, duration: 0.6, stagger: 0.15, ease: 'power2.out', immediateRender: false }, '-=0.5');
 
             // --- PANEL 3: LATER DAYS (Slide from RIGHT) ---
             const laterTl = gsap.timeline({
@@ -163,9 +163,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             laterTl.from('#panel-later .panel-label', { x: 100, opacity: 0, duration: 0.5, ease: 'power2.out', immediateRender: false })
-                   .from('#panel-later .about-heading', { x: 200, opacity: 0, duration: 0.8, ease: 'power3.out', immediateRender: false }, '-=0.3')
-                   .from('#panel-later .panel-glow', { opacity: 0, duration: 1.2, immediateRender: false }, '-=0.6')
-                   .from('#panel-later .bullet-item', { x: 100, opacity: 0, duration: 0.6, stagger: 0.15, ease: 'power2.out', immediateRender: false }, '-=0.5');
+                .from('#panel-later .about-heading', { x: 200, opacity: 0, duration: 0.8, ease: 'power3.out', immediateRender: false }, '-=0.3')
+                .from('#panel-later .panel-glow', { opacity: 0, duration: 1.2, immediateRender: false }, '-=0.6')
+                .from('#panel-later .bullet-item', { x: 100, opacity: 0, duration: 0.6, stagger: 0.15, ease: 'power2.out', immediateRender: false }, '-=0.5');
 
             // --- PANEL 4: EXPERIENCE (Scale up from center) ---
             const expTl = gsap.timeline({
@@ -177,9 +177,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             expTl.from('#panel-experience .panel-label', { y: 30, opacity: 0, duration: 0.5, ease: 'power2.out', immediateRender: false })
-                 .from('#panel-experience .about-heading', { y: 60, opacity: 0, duration: 0.8, ease: 'power3.out', immediateRender: false }, '-=0.3')
-                 .from('#panel-experience .panel-glow', { opacity: 0, duration: 1, immediateRender: false }, '-=0.5')
-                 .from('#panel-experience .experience-card', { y: 80, opacity: 0, scale: 0.9, duration: 0.8, ease: 'back.out(1.4)', immediateRender: false }, '-=0.3');
+                .from('#panel-experience .about-heading', { y: 60, opacity: 0, duration: 0.8, ease: 'power3.out', immediateRender: false }, '-=0.3')
+                .from('#panel-experience .panel-glow', { opacity: 0, duration: 1, immediateRender: false }, '-=0.5')
+                .from('#panel-experience .experience-card', { y: 80, opacity: 0, scale: 0.9, duration: 0.8, ease: 'back.out(1.4)', immediateRender: false }, '-=0.3');
 
             // --- PANEL 5: ACHIEVEMENTS (Cards bounce in) ---
             const achTl = gsap.timeline({
@@ -191,15 +191,15 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             achTl.from('#panel-achievements .panel-label', { y: 30, opacity: 0, duration: 0.5, ease: 'power2.out', immediateRender: false })
-                 .from('#panel-achievements .about-heading', { y: 60, opacity: 0, duration: 0.8, ease: 'power3.out', immediateRender: false }, '-=0.3')
-                 .from('#panel-achievements .panel-glow', { opacity: 0, duration: 1.2, immediateRender: false }, '-=0.6')
-                 .from('.achievement-card', {
-                     y: 100, opacity: 0, scale: 0.8,
-                     duration: 0.7,
-                     stagger: 0.15,
-                     ease: 'back.out(1.7)',
-                     immediateRender: false
-                 }, '-=0.4');
+                .from('#panel-achievements .about-heading', { y: 60, opacity: 0, duration: 0.8, ease: 'power3.out', immediateRender: false }, '-=0.3')
+                .from('#panel-achievements .panel-glow', { opacity: 0, duration: 1.2, immediateRender: false }, '-=0.6')
+                .from('.achievement-card', {
+                    y: 100, opacity: 0, scale: 0.8,
+                    duration: 0.7,
+                    stagger: 0.15,
+                    ease: 'back.out(1.7)',
+                    immediateRender: false
+                }, '-=0.4');
 
         });
 
