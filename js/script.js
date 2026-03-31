@@ -12,8 +12,8 @@ const projectsData = [
             "Expiration and max-use constraints",
             "RESTful API for e-commerce integration"
         ],
-        github: "https://github.com/Adityaaafr",
-        demo: "https://github.com/Adityaaafr",
+        github: "https://github.com/prince9661/Dynamic-coupon-management-system",
+
     },
     {
         id: "02",
@@ -28,12 +28,12 @@ const projectsData = [
             "Custom alert triggers on price dips/spikes",
             "Detailed profit/loss analytics"
         ],
-        github: "https://github.com/Adityaaafr",
-        demo: "https://github.com/Adityaaafr",
+        github: "https://github.com/Adityaaafr/ai-crypto-portfolio-tracker",
+
     },
     {
         id: "03",
-        name: "VOIP Encryption Website",
+        name: "Encodex",
         category: "Web & Security",
         stack: "HTML, CSS, JS, PHP",
         isFeatured: false,
@@ -44,8 +44,8 @@ const projectsData = [
             "Custom PHP routing for API requests",
             "Mobile-optimized performance"
         ],
-        github: "https://github.com/Adityaaafr",
-        demo: "https://github.com/Adityaaafr",
+        github: "https://github.com/stack-overflowers/encodex",
+
     },
     {
         id: "04",
@@ -60,8 +60,8 @@ const projectsData = [
             "Retry mechanisms for failed deliveries",
             "Extensible notification channels"
         ],
-        github: "#",
-        demo: "#",
+        github: "https://github.com/Adityaaafr/Notify-System",
+
     },
 
 ];
@@ -104,6 +104,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (startBtn) {
                 startBtn.addEventListener('click', () => {
+                    const bgMusic = document.getElementById('bg-music');
+                    if (bgMusic) {
+                        bgMusic.volume = 0;
+                        bgMusic.play().catch(e => console.error("Audio play failed:", e));
+                    }
+
                     // Hide the 'Click to Begin' UI
                     if (startUI) {
                         startUI.style.opacity = '0';
@@ -118,12 +124,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     const safetySkipTimeout = setTimeout(() => {
                         console.log("Intro safety skip triggered");
                         showLoaderAndEnter();
+                        if (bgMusic) gsap.to(bgMusic, { volume: 0.4, duration: 3 });
                     }, 20000);
 
                     introVideo.play().then(() => {
                         introVideo.addEventListener('ended', () => {
                             clearTimeout(safetySkipTimeout);
                             showLoaderAndEnter();
+                            if (bgMusic) gsap.to(bgMusic, { volume: 0.4, duration: 3 });
                         }, { once: true });
                     }).catch(err => {
                         console.error("Video play failed:", err);
@@ -282,15 +290,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 const featuresList = document.getElementById('modal-features-list');
                 featuresList.innerHTML = data.features.map(f => `<li>${f}</li>`).join('');
 
+                // Update GitHub link
+                const githubBtn = document.getElementById('modal-github');
+                if (githubBtn) {
+                    githubBtn.href = data.github || "#";
+                }
+
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden'; // prevent scrolling
             }
         }
+
+        // Close button and overlay click (via delegation)
+        if (e.target.closest('#modal-close') || e.target === modal) {
+            closeModal();
+        }
     });
 
     const closeModal = () => {
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
     };
 
     closeBtn.addEventListener('click', closeModal);
