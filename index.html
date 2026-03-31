@@ -1,14 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aditya Raj | Portfolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=2">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=10">
+    <!-- Instant intro skip — runs BEFORE any rendering to prevent flash -->
+    <script>
+        (function () {
+            var p = new URLSearchParams(location.search);
+            if (p.get('skip') === 'intro' || p.get('from') === 'about') {
+                document.documentElement.classList.add('skip-intro');
+            }
+            if (p.get('from') === 'about') {
+                document.documentElement.classList.add('from-about');
+            }
+            if (p.has('skip') || p.has('from')) {
+                history.replaceState({}, '', location.pathname);
+            }
+        })();
+    </script>
 </head>
+
 <body>
     <div class="cursor"></div>
     <div class="overlay-glow"></div>
@@ -17,7 +35,7 @@
     <section id="intro-gate" class="intro-gate">
         <!-- The user downloaded WebM video -->
         <video id="intro-video" class="intro-video" src="assets/intro.webm" playsinline preload="auto"></video>
-        
+
         <div id="intro-start-ui" class="intro-ui-centered">
             <h2 class="intro-title">SYSTEM INITIATION</h2>
             <button id="btn-start-experience" class="btn btn-secondary">CLICK TO BEGIN</button>
@@ -25,9 +43,11 @@
 
         <div id="intro-loading-ui" class="intro-ui-centered" style="display: none; opacity: 0;">
             <div class="loader-spinner"></div>
-            <p style="color: var(--accent-red); letter-spacing: 5px; font-size: 0.8rem; margin-top: 20px; font-weight: 900;">INITIALIZING...</p>
+            <p
+                style="color: var(--accent-red); letter-spacing: 5px; font-size: 0.8rem; margin-top: 20px; font-weight: 900;">
+                INITIALIZING...</p>
         </div>
-        
+
         <!-- The transition burst graphic -->
         <div class="burst-circle"></div>
     </section>
@@ -39,7 +59,7 @@
         </a>
         <div class="links">
             <a href="#projects">Work</a>
-            <a href="about.html">About</a>
+            <a href="about.html" id="nav-about-link">About</a>
             <a href="mailto:contact@adityaraj.com">Contact</a>
         </div>
     </nav>
@@ -65,6 +85,171 @@
         </header>
     </section>
 
+    <!-- Return Loading Overlay (from About page) -->
+    <div class="return-loader" id="return-loader" style="display: none;">
+        <p class="return-loader-text">RETURNING</p>
+        <div class="return-loader-bar">
+            <div class="return-loader-fill"></div>
+        </div>
+    </div>
+
+
+    <!-- ===== MUSIC-INSPIRED SCROLL SHOWCASE ===== -->
+    <section id="music-showcase" class="music-showcase">
+        <div class="music-progress-bar">
+            <div class="music-progress-fill" id="music-progress-fill"></div>
+        </div>
+        <div class="music-label">WHAT INSPIRES ME</div>
+        <div class="album-track">
+
+            <!-- THE WEEKND -->
+            <div class="album-slide" id="album-1">
+                <div class="album-visual">
+                    <img src="assets/houseofballoons.jpg" alt="House of Balloons" class="album-img">
+                </div>
+                <div class="album-info">
+                    <p class="album-artist">THE WEEKND</p>
+                    <h3 class="album-name">HOUSE OF BALLOONS</h3>
+                </div>
+            </div>
+            <div class="album-slide" id="album-2">
+                <div class="album-visual">
+                    <img src="assets/Echoes OF Silence.jpg" alt="Echoes of Silence" class="album-img">
+                </div>
+                <div class="album-info">
+                    <p class="album-artist">THE WEEKND</p>
+                    <h3 class="album-name">ECHOES OF SILENCE</h3>
+                </div>
+            </div>
+            <div class="album-slide" id="album-3">
+                <div class="album-visual">
+                    <img src="assets/The Weeknd - Starboy (2016).jpg" alt="Starboy" class="album-img">
+                </div>
+                <div class="album-info">
+                    <p class="album-artist">THE WEEKND</p>
+                    <h3 class="album-name">STARBOY</h3>
+                </div>
+            </div>
+            <div class="album-slide" id="album-4">
+                <div class="album-visual">
+                    <img src="assets/HURRY UP TOMORROW COVER ART.jpg" alt="Hurry Up Tomorrow" class="album-img">
+                </div>
+                <div class="album-info">
+                    <p class="album-artist">THE WEEKND</p>
+                    <h3 class="album-name">HURRY UP TOMORROW</h3>
+                </div>
+            </div>
+
+            <!-- TRAVIS SCOTT -->
+            <div class="album-slide" id="album-5">
+                <div class="album-visual">
+                    <img src="assets/Travis Scott.jpg" alt="Travis Scott" class="album-img">
+                </div>
+                <div class="album-info">
+                    <p class="album-artist">TRAVIS SCOTT</p>
+                    <h3 class="album-name">UTOPIA</h3>
+                </div>
+            </div>
+            <div class="album-slide" id="album-6">
+                <div class="album-visual">
+                    <img src="assets/JACKBOYS.jpg" alt="JACKBOYS" class="album-img">
+                </div>
+                <div class="album-info">
+                    <p class="album-artist">TRAVIS SCOTT</p>
+                    <h3 class="album-name">JACKBOYS</h3>
+                </div>
+            </div>
+            <div class="album-slide" id="album-7">
+                <div class="album-visual">
+                    <img src="assets/Album cover JACKBOYS 2.jpg" alt="JACKBOYS 2" class="album-img">
+                </div>
+                <div class="album-info">
+                    <p class="album-artist">TRAVIS SCOTT</p>
+                    <h3 class="album-name">JACKBOYS 2</h3>
+                </div>
+            </div>
+            <div class="album-slide" id="album-8">
+                <div class="album-visual">
+                    <img src="assets/8am in Charlotte.jpg" alt="8am in Charlotte" class="album-img">
+                </div>
+                <div class="album-info">
+                    <p class="album-artist">DRAKE</p>
+                    <h3 class="album-name">8AM IN CHARLOTTE</h3>
+                </div>
+            </div>
+
+            <!-- KANYE WEST -->
+            <div class="album-slide" id="album-9">
+                <div class="album-visual">
+                    <img src="assets/Graduation.jpg" alt="Graduation" class="album-img">
+                </div>
+                <div class="album-info">
+                    <p class="album-artist">KANYE WEST</p>
+                    <h3 class="album-name">GRADUATION</h3>
+                </div>
+            </div>
+            <div class="album-slide" id="album-10">
+                <div class="album-visual">
+                    <img src="assets/Kanye West - 808s & Heartbreak (2008).jpg" alt="808s & Heartbreak"
+                        class="album-img">
+                </div>
+                <div class="album-info">
+                    <p class="album-artist">KANYE WEST</p>
+                    <h3 class="album-name">808S & HEARTBREAK</h3>
+                </div>
+            </div>
+            <div class="album-slide" id="album-11">
+                <div class="album-visual">
+                    <img src="assets/Kanye West - Yeezus (2013).jpg" alt="Yeezus" class="album-img">
+                </div>
+                <div class="album-info">
+                    <p class="album-artist">KANYE WEST</p>
+                    <h3 class="album-name">YEEZUS</h3>
+                </div>
+            </div>
+
+            <!-- SEEDHE MAUT & OTHERS -->
+            <div class="album-slide" id="album-12">
+                <div class="album-visual">
+                    <img src="assets/seedhe maut.jpg" alt="Seedhe Maut" class="album-img">
+                </div>
+                <div class="album-info">
+                    <p class="album-artist">SEEDHE MAUT</p>
+                    <h3 class="album-name">NAYAAB</h3>
+                </div>
+            </div>
+            <div class="album-slide" id="album-13">
+                <div class="album-visual">
+                    <img src="assets/न mixtape.jpg" alt="न Mixtape" class="album-img">
+                </div>
+                <div class="album-info">
+                    <p class="album-artist">SEEDHE MAUT</p>
+                    <h3 class="album-name">न MIXTAPE</h3>
+                </div>
+            </div>
+            <div class="album-slide" id="album-14">
+                <div class="album-visual">
+                    <img src="assets/Bully.jpg" alt="Bully" class="album-img">
+                </div>
+                <div class="album-info">
+                    <p class="album-artist">KANYE WEST</p>
+                    <h3 class="album-name">BULLY</h3>
+                </div>
+            </div>
+            <div class="album-slide" id="album-15">
+                <div class="album-visual">
+                    <img src="assets/Penthouse Tapes, Vol_ 1 (2026) by Calm.jpg" alt="Penthouse Tapes"
+                        class="album-img">
+                </div>
+                <div class="album-info">
+                    <p class="album-artist">CALM</p>
+                    <h3 class="album-name">PENTHOUSE TAPES VOL. 1</h3>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
     <!-- Project Portfolio Section -->
     <div id="portfolio-main" class="portfolio-main">
         <div class="animated-dark-bg"></div>
@@ -73,7 +258,7 @@
             <p class="section-label">SELECTED WORK</p>
             <h2 class="section-title">PROJECTS</h2>
             <div class="title-underline"></div>
-            
+
             <div class="project-list" id="project-list">
                 <!-- Injected via JS -->
             </div>
@@ -108,14 +293,17 @@
                 </div>
             </div>
             <div class="modal-actions">
-                <a href="#" id="modal-github" class="btn btn-primary" target="_blank">GITHUB <span class="arrow">↗</span></a>
-                <a href="#" id="modal-demo" class="btn btn-secondary" target="_blank">LIVE DEMO <span class="arrow">↗</span></a>
+                <a href="#" id="modal-github" class="btn btn-primary" target="_blank">GITHUB <span
+                        class="arrow">↗</span></a>
+                <a href="#" id="modal-demo" class="btn btn-secondary" target="_blank">LIVE DEMO <span
+                        class="arrow">↗</span></a>
             </div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="js/script.js?v=2"></script>
+    <script src="js/script.js?v=12"></script>
 </body>
+
 </html>

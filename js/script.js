@@ -66,6 +66,26 @@ const projectsData = [
 
 ];
 
+// --- CRITICAL: Detect Return Flow BEFORE DOMContentLoaded logic fully runs ---
+(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('from') === 'about') {
+        document.documentElement.classList.add('from-about');
+        
+        // Perfection: Pre-hide navbar and other content via style tag to prevent any flash
+        const style = document.createElement('style');
+        style.id = 'temp-return-style';
+        style.innerHTML = `
+            .navbar, #dragon-sequence-container, .projects-section, .about-section, .footer { 
+                display: none !important; 
+            }
+            #music-showcase { display: block !important; opacity: 1 !important; }
+            #album-1 { opacity: 1 !important; transform: none !important; }
+        `;
+        document.head.appendChild(style);
+    }
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- Intro Gate Logic ---
@@ -73,85 +93,92 @@ document.addEventListener('DOMContentLoaded', () => {
     const startBtn = document.getElementById('btn-start-experience');
     const startUI = document.getElementById('intro-start-ui');
     const introVideo = document.getElementById('intro-video');
-    const burstCircle = document.querySelector('.burst-circle');
+    const burstCircle = document.querySelector('#intro-gate .burst-circle');
 
     if (introGate && introVideo) {
-        // Check if we're returning from another page (skip the intro)
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('skip') === 'intro') {
-            // Instantly skip the intro gate
-            introGate.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-            document.body.style.overflowX = 'hidden';
+        const isSkipped = document.documentElement.classList.contains('skip-intro');
 
-            // Clean up URL without reloading
-            window.history.replaceState({}, '', window.location.pathname);
-
-            // Refresh GSAP after layout settles
-            setTimeout(() => {
-                if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
-            }, 100);
-        } else {
-            // Normal intro gate flow
+        if (!isSkipped) {
             document.body.style.overflow = 'hidden';
+            const loadingUI = document.getElementById('intro-loading-ui');
 
-        startBtn.addEventListener('click', () => {
-            // Hide the 'Click to Begin' UI
-            startUI.style.opacity = '0';
-            setTimeout(() => { startUI.style.display = 'none'; }, 1000);
+            if (startBtn) {
+                startBtn.addEventListener('click', () => {
+                    // Hide the 'Click to Begin' UI
+                    if (startUI) {
+                        startUI.style.opacity = '0';
+                        setTimeout(() => { startUI.style.display = 'none'; }, 300);
+                    }
 
-            // Play video with audio out loud
-            introVideo.play().then(() => {
-                introVideo.classList.add('playing');
-            }).catch(err => {
-                console.error("Video play failed (Likely missing intro.webm):", err);
-                // FALLBACK: If video is missing/404s, skip straight to loader
-                showLoaderAndEnter();
-            });
-        });
+                    // Play the intro video
+                    introVideo.muted = true;
+                    introVideo.classList.add('playing'); 
+                    
+                    // SAFETY SKIP: Only starts when video begins
+                    const safetySkipTimeout = setTimeout(() => {
+                        console.log("Intro safety skip triggered");
+                        showLoaderAndEnter();
+                    }, 20000);
 
-        function showLoaderAndEnter() {
-            // Reveal the automated Loader Spinner Instead of a button
-            const loaderUI = document.getElementById('intro-loading-ui');
-            if(loaderUI) {
-                loaderUI.style.display = 'flex';
-                setTimeout(() => { loaderUI.style.opacity = '1'; }, 50); 
+                    introVideo.play().then(() => {
+                        introVideo.addEventListener('ended', () => {
+                            clearTimeout(safetySkipTimeout);
+                            showLoaderAndEnter();
+                        }, { once: true });
+                    }).catch(err => {
+                        console.error("Video play failed:", err);
+                        clearTimeout(safetySkipTimeout);
+                        showLoaderAndEnter();
+                    });
+                });
             }
 
-            // Automate the transition after 2.5 seconds of "loading"
-            setTimeout(() => {
-                // Hide Loader
-                if(loaderUI) loaderUI.style.opacity = '0';
+            function showLoaderAndEnter() {
+                if (loadingUI) {
+                    loadingUI.style.display = 'flex';
+                    setTimeout(() => { loadingUI.style.opacity = '1'; }, 50);
+                }
 
-                // Trigger Burst Animation Flash
-                burstCircle.classList.add('active');
-
-                // Fade out intro gate and unlock the site
                 setTimeout(() => {
-                    introGate.classList.add('hidden');
+                    if (loadingUI) loadingUI.style.opacity = '0';
+                    if (burstCircle) burstCircle.classList.add('active');
 
-                    // Restore native scrolling for the portfolio
-                    document.body.style.overflow = 'auto';
-                    document.body.style.overflowX = 'hidden';
-
-                    // CRITICAL FIX: Refresh GSAP calculations since viewport layout just changed
-                    if (typeof ScrollTrigger !== 'undefined') {
-                        ScrollTrigger.refresh();
-                    }
-                }, 600);
-            }, 2500);
+                    setTimeout(() => {
+                        if (introGate) introGate.classList.add('hidden');
+                        document.body.style.overflow = 'auto';
+                        document.body.style.overflowX = 'hidden';
+                        if (typeof ScrollTrigger !== 'undefined') {
+                            ScrollTrigger.refresh();
+                        }
+                    }, 600);
+                }, 2500);
+            }
         }
-
-        // Listen for the exact moment the video finishes
-        introVideo.addEventListener('ended', showLoaderAndEnter);
-        } // end else (normal intro flow)
     }
     // --- End Intro Gate ---
 
-    // --- SMX-Style Page Transition (Logo -> About Page) ---
-    const logoTrigger = document.getElementById('logo-about-trigger');
-    if (logoTrigger) {
-        logoTrigger.addEventListener('click', (e) => {
+    // --- RETURN FROM ABOUT: Initial State Setup ---
+    if (document.documentElement.classList.contains('from-about')) {
+        const musicSection = document.getElementById('music-showcase');
+        if (musicSection) {
+            // Instant scroll and refresh
+            window.scrollTo(0, 0); 
+            musicSection.scrollIntoView({ behavior: 'auto' });
+            if (typeof ScrollTrigger !== 'undefined') {
+                ScrollTrigger.refresh();
+            }
+        }
+    }
+
+    // --- SMX-Style Page Transition (Logo/About Link -> About Page) ---
+    const aboutTriggers = [
+        document.getElementById('logo-about-trigger'),
+        document.getElementById('nav-about-link')
+    ];
+
+    aboutTriggers.forEach(trigger => {
+        if (trigger) {
+            trigger.addEventListener('click', (e) => {
             e.preventDefault();
 
             const overlay = document.getElementById('page-transition-overlay');
@@ -184,8 +211,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 bar.style.width = rounded + '%';
                 percentText.textContent = rounded + '%';
             }, intervalTime);
-        });
-    }
+            });
+        }
+    });
     // --- End Page Transition ---
 
     // Custom Cursor
@@ -352,6 +380,118 @@ document.addEventListener('DOMContentLoaded', () => {
                 masterTl.to(".hero-title", { scale: 1.5, duration: masterDuration * 0.4, ease: "none" }, masterDuration * 0.6);
                 masterTl.to(".hero-subtitle", { scale: 1.5, duration: masterDuration * 0.4, ease: "none" }, masterDuration * 0.6);
                 masterTl.to(canvas, { scale: 1.3, duration: masterDuration * 0.4, ease: "none" }, masterDuration * 0.6);
+            }
+
+            // ===== SCROLL-BASED MUSIC SHOWCASE (STRICTLY GUARDED) =====
+            const musicShowcase = document.querySelector('.music-showcase');
+            const isFromAboutFlow = document.documentElement.classList.contains('from-about');
+
+            if (musicShowcase && isFromAboutFlow) {
+                const albumSlides = gsap.utils.toArray('.album-slide');
+                const progressFill = document.getElementById('music-progress-fill');
+
+                const musicTl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: '.music-showcase',
+                        pin: true,
+                        scrub: 0.8,
+                        start: 'top top',
+                        end: `+=${albumSlides.length * 800}px`,
+                        onEnter: () => musicShowcase.classList.add('is-active'),
+                        onLeave: () => {
+                            musicShowcase.classList.remove('is-active');
+
+                            // CRITICAL: Reset scroll to absolute top immediately when the music ritual ends
+                            // to ensure the dragon page begins from its topmost starting part.
+                            window.scrollTo(0, 0); 
+                            
+                            // PERFECTION: Finishing the music scroll reveals the dragon page
+                            const dragonSection = document.getElementById('dragon-sequence-container');
+                            if (dragonSection) {
+                                const navbar = document.querySelector('.navbar');
+                                
+                                [dragonSection, navbar].forEach(el => {
+                                    if (!el) return;
+                                    el.style.display = (el === navbar) ? 'flex' : 'block';
+                                    el.style.opacity = '0';
+                                    if (el === dragonSection) {
+                                        el.style.position = 'fixed';
+                                        el.style.top = '0'; el.style.left = '0'; el.style.width = '100%';
+                                    }
+                                });
+                                
+                                gsap.to(musicShowcase, { opacity: 0, duration: 1.2, ease: 'power2.inOut' });
+                                gsap.to([dragonSection, navbar], { 
+                                    opacity: 1, 
+                                    duration: 1.8, 
+                                    delay: 0.3,
+                                    ease: 'power2.inOut',
+                                    stagger: 0.3,
+                                    onComplete: () => {
+                                        document.documentElement.classList.remove('from-about');
+                                        if (musicShowcase) musicShowcase.remove();
+                                        const tempStyle = document.getElementById('temp-return-style');
+                                        if (tempStyle) tempStyle.remove();
+
+                                        if (dragonSection) {
+                                            dragonSection.style.position = '';
+                                            dragonSection.style.display = '';
+                                        }
+                                        if (navbar) navbar.style.display = '';
+                                        
+                                        // Final top-off scroll reset and refresh
+                                        window.scrollTo(0, 0); 
+                                        if (typeof ScrollTrigger !== 'undefined') {
+                                            ScrollTrigger.refresh();
+                                        }
+                                    }
+                                });
+                            }
+                        },
+                        onEnterBack: () => musicShowcase.classList.add('is-active'),
+                        onLeaveBack: () => musicShowcase.classList.remove('is-active'),
+                        onUpdate: (self) => {
+                            if (progressFill) {
+                                progressFill.style.width = (self.progress * 100) + '%';
+                            }
+                        }
+                    }
+                });
+
+                // Animate each album: fade in → hold → fade out
+                albumSlides.forEach((slide, i) => {
+                    const dur = 100 / albumSlides.length;
+                    const start = i * dur;
+
+                    // Perfection: Start opaque because IIFE already made it visible
+                    const startOpacity = (i === 0) ? 1 : 0;
+                    const startScale = (i === 0) ? 1 : 0.8;
+                    const startY = (i === 0) ? 0 : 100;
+
+                    musicTl.fromTo(slide,
+                        { opacity: startOpacity, scale: startScale, y: startY },
+                        { opacity: 1, scale: 1, y: 0, duration: dur * 0.3, ease: 'power2.out' },
+                        start
+                    );
+
+                    if (i < albumSlides.length - 1) {
+                        musicTl.to(slide,
+                            { opacity: 0, scale: 1.1, y: -80, duration: dur * 0.3, ease: 'power2.in' },
+                            start + dur * 0.7
+                        );
+                    }
+                });
+
+                // Stack slides for crossfade
+                albumSlides.forEach((slide, i) => {
+                    if (i > 0) {
+                        gsap.set(slide, { position: 'absolute', top: 0, left: 0, width: '100%', opacity: 0 });
+                    }
+                });
+            } else if (musicShowcase) {
+                // If we are NOT in the 'from-about' flow, physically remove the showcase node
+                // to prevent any accidental visibility or layout issues.
+                musicShowcase.remove();
             }
 
             // 2. Staggered Row Reveals

@@ -19,6 +19,65 @@
     cursor: none; /* Custom cursor */
 }
 
+/* ===== INSTANT INTRO SKIP (prevents flash on return from About) ===== */
+html.skip-intro #intro-gate {
+    display: none !important;
+}
+html.skip-intro body {
+    overflow: auto !important;
+    overflow-x: hidden !important;
+}
+
+/* When returning from About: dragon section stays visible, music overlay handles everything */
+html.from-about .music-showcase {
+    display: flex !important;
+}
+
+/* Return Loading Overlay */
+.return-loader {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: #000;
+    z-index: 50000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    transition: opacity 0.8s ease;
+}
+.return-loader.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+.return-loader-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.3);
+}
+.return-loader-bar {
+    width: 200px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    overflow: hidden;
+}
+.return-loader-fill {
+    width: 0%;
+    height: 100%;
+    background: var(--accent-red);
+    box-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
+    animation: returnLoaderFill 1.5s ease forwards;
+}
+@keyframes returnLoaderFill {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
+
 html {
     scroll-behavior: smooth;
 }
@@ -206,6 +265,8 @@ body {
     opacity: 0;
 }
 
+
+
 .burst-circle.active {
     opacity: 1;
     animation: burstExpander 1.8s cubic-bezier(0.8, 0, 0.2, 1) forwards;
@@ -339,6 +400,161 @@ a:hover {
     border-radius: 4px;
     box-shadow: 0 0 15px rgba(229, 9, 20, 0.6), 0 0 30px rgba(229, 9, 20, 0.3);
     transition: width 0.05s linear;
+}
+
+/* ===== MUSIC-INSPIRED SCROLL SHOWCASE (TRANSITION ONLY) ===== */
+.music-showcase {
+    position: relative;
+    width: 100%;
+    background: #000;
+    overflow: hidden;
+    z-index: 5;
+    display: none; /* Hidden by default - only for return transition */
+}
+
+/* Reveal ONLY during return flow */
+html.from-about .music-showcase {
+    display: block;
+}
+
+/* Hide main content and navbar until music transition is complete */
+html.from-about .navbar,
+html.from-about #dragon-sequence-container,
+html.from-about .projects-section,
+html.from-about .about-section,
+html.from-about .footer {
+    display: none !important;
+}
+
+.music-progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.05);
+    z-index: 20000;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.music-showcase.is-active .music-progress-bar {
+    opacity: 1;
+}
+
+.music-progress-fill {
+    width: 0%;
+    height: 100%;
+    background: var(--accent-red);
+    box-shadow: 0 0 12px rgba(229, 9, 20, 0.6);
+    transition: width 0.1s linear;
+}
+
+/* perfection: the "Returning" label only shows during the actual return flow */
+html.from-about .music-progress-bar::after {
+    content: "RETURNING TO PORTFOLIO";
+    position: absolute;
+    top: 15px;
+    right: 30px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: var(--accent-red);
+    opacity: 0.8;
+}
+
+.music-label {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.2);
+    z-index: 10;
+}
+
+.album-track {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+
+.album-slide {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    position: relative;
+}
+
+.album-visual {
+    width: 320px;
+    height: 320px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow:
+        0 20px 80px rgba(0, 0, 0, 0.8),
+        0 0 60px rgba(229, 9, 20, 0.1);
+    transition: transform 0.6s cubic-bezier(0.1, 0.9, 0.2, 1);
+    will-change: transform;
+}
+
+.album-visual:hover {
+    transform: scale(1.05) rotateY(5deg);
+}
+
+.album-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.album-info {
+    text-align: center;
+}
+
+.album-artist {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--accent-red);
+    margin-bottom: 0.8rem;
+}
+
+.album-name {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 400;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    line-height: 1;
+    letter-spacing: 2px;
+    text-shadow: 0 0 40px rgba(229, 9, 20, 0.2);
+}
+
+@media (max-width: 768px) {
+    .album-visual {
+        width: 240px;
+        height: 240px;
+    }
+    .album-name {
+        font-size: clamp(2rem, 8vw, 3rem);
+    }
+    .music-label {
+        font-size: 0.6rem;
+        letter-spacing: 5px;
+    }
 }
 
 /* Hero Section */

@@ -130,15 +130,46 @@ body {
     justify-content: center;
 }
 
+.quote-flame-wrapper {
+    position: relative;
+    display: inline-block;
+    padding: 2rem 3rem;
+}
+
+.flame-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.85;
+}
+
 .quote-hindi {
+    position: relative;
+    z-index: 2;
     font-size: clamp(2rem, 5vw, 4rem);
     font-weight: 900;
-    color: var(--text-primary);
+    color: #ff2a2a;
     text-align: center;
     line-height: 1.5;
     max-width: 800px;
     letter-spacing: 2px;
-    text-shadow: 0 0 40px rgba(229, 9, 20, 0.3);
+    text-shadow:
+        0 0 10px rgba(255, 42, 42, 0.8),
+        0 0 30px rgba(255, 42, 42, 0.5),
+        0 0 60px rgba(255, 100, 0, 0.3),
+        0 0 100px rgba(255, 60, 0, 0.15);
+    animation: flameFlicker 3s ease-in-out infinite;
+}
+
+@keyframes flameFlicker {
+    0%, 100% { text-shadow: 0 0 10px rgba(255, 42, 42, 0.8), 0 0 30px rgba(255, 42, 42, 0.5), 0 0 60px rgba(255, 100, 0, 0.3); }
+    25% { text-shadow: 0 0 15px rgba(255, 42, 42, 1), 0 0 40px rgba(255, 42, 42, 0.6), 0 0 80px rgba(255, 100, 0, 0.4); }
+    50% { text-shadow: 0 0 8px rgba(255, 42, 42, 0.7), 0 0 25px rgba(255, 42, 42, 0.4), 0 0 50px rgba(255, 100, 0, 0.25); }
+    75% { text-shadow: 0 0 20px rgba(255, 42, 42, 1), 0 0 45px rgba(255, 60, 0, 0.7), 0 0 90px rgba(255, 100, 0, 0.4); }
 }
 
 .quote-credit {
@@ -186,9 +217,24 @@ body {
 /* ===== PANEL INNER LAYOUTS ===== */
 .about-panel-inner {
     position: relative;
-    z-index: 2;
+    z-index: 5;
     width: 100%;
     max-width: 1300px;
+}
+
+/* VISIBILITY FIX: Ensure elements are visible by default */
+.about-heading,
+.panel-label,
+.bio-line,
+.bullet-item,
+.experience-card,
+.achievement-card,
+.about-3d-object,
+.quote-hindi,
+.quote-credit {
+    opacity: 1 !important;
+    visibility: visible !important;
+    will-change: transform, opacity;
 }
 
 .center-layout {
