@@ -235,12 +235,35 @@ document.addEventListener('DOMContentLoaded', () => {
                     immediateRender: false
                 }, '-=0.4');
 
+            // --- PANEL 6: SKILLS & RESUME ---
+            const skillsTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: '#panel-skills',
+                    start: 'top 75%',
+                    toggleActions: 'play none none reverse',
+                }
+            });
+
+            skillsTl.from('#panel-skills .panel-label', { y: 30, opacity: 0, duration: 0.5, ease: 'power2.out', immediateRender: false })
+                .from('#panel-skills .about-heading', { y: 60, opacity: 0, duration: 0.8, ease: 'power3.out', immediateRender: false }, '-=0.3')
+                .from('#panel-skills .panel-glow', { opacity: 0, duration: 1.2, immediateRender: false }, '-=0.6')
+                .from('#panel-skills .skill-cat-title', { opacity: 0, x: -20, duration: 0.5, stagger: 0.2, immediateRender: false }, '-=0.3')
+                .from('#panel-skills .skill-item, #panel-skills .skill-tag', { 
+                    opacity: 0, 
+                    y: 20, 
+                    duration: 0.4, 
+                    stagger: 0.05, 
+                    ease: 'power1.out',
+                    immediateRender: false 
+                }, '-=0.3')
+                .from('#panel-skills .btn-download', { opacity: 0, scale: 0.9, y: 20, duration: 0.6, ease: 'back.out(1.5)', immediateRender: false }, '-=0.2');
+
         });
 
         // --- Mobile fallback ---
         mm.add("(max-width: 767px)", () => {
             gsap.utils.toArray('.about-panel').forEach(panel => {
-                gsap.from(panel.querySelectorAll('.panel-label, .about-heading, .bio-line, .bullet-item, .experience-card, .achievement-card, .about-3d-object, .quote-flame-wrapper, .quote-credit'), {
+                gsap.from(panel.querySelectorAll('.panel-label, .about-heading, .bio-line, .bullet-item, .experience-card, .achievement-card, .about-3d-object, .quote-flame-wrapper, .quote-credit, .skill-cat-title, .skill-item, .skill-tag, .btn-download'), {
                     y: 40,
                     opacity: 0,
                     duration: 0.8,
