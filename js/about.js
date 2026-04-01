@@ -1,4 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Activate custom cursor (graceful degradation: default cursor if JS fails)
+    document.body.classList.add('cursor-active');
+
+    // --- RESTORE MUSIC from homepage ---
+    const bgMusic = document.getElementById('bg-music');
+    const savedTime = sessionStorage.getItem('bgMusicTime');
+    const wasPlaying = sessionStorage.getItem('bgMusicPlaying');
+    if (bgMusic && wasPlaying === 'true') {
+        bgMusic.currentTime = parseFloat(savedTime || '0');
+        bgMusic.volume = parseFloat(sessionStorage.getItem('bgMusicVolume') || '0.4');
+        bgMusic.play().catch(e => console.log('Audio autoplay blocked:', e));
+    }
+
+    // --- SAVE MUSIC STATE before leaving page ---
+    window.addEventListener('beforeunload', () => {
+        if (bgMusic && !bgMusic.paused) {
+            sessionStorage.setItem('bgMusicTime', bgMusic.currentTime);
+            sessionStorage.setItem('bgMusicPlaying', 'true');
+            sessionStorage.setItem('bgMusicVolume', bgMusic.volume);
+        }
+    });
 
     // ===== CUSTOM CURSOR =====
     const cursor = document.querySelector('.cursor');
@@ -19,6 +40,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Hamburger Menu Toggle
+    const hamburger = document.getElementById('hamburger');
+    const navbarEl = document.querySelector('.navbar');
+    if (hamburger && navbarEl) {
+        hamburger.addEventListener('click', () => {
+            navbarEl.classList.toggle('menu-open');
+        });
+        document.querySelectorAll('.navbar .links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navbarEl.classList.remove('menu-open');
+            });
+        });
+    }
 
     // ===== FLAME PARTICLE SYSTEM (Hindi Quote) =====
     const flameCanvas = document.getElementById('flame-canvas');

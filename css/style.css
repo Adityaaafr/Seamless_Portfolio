@@ -16,8 +16,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+/* Custom cursor: only hide default cursor when JS is active */
+body.cursor-active,
+body.cursor-active * {
     cursor: none;
-    /* Custom cursor */
 }
 
 /* ===== INSTANT INTRO SKIP (prevents flash on return from About) ===== */
@@ -390,6 +394,68 @@ a:hover {
     font-weight: 600;
     letter-spacing: 1px;
     text-transform: uppercase;
+}
+
+/* Hamburger Menu */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    padding: 8px;
+}
+
+.hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.hamburger:hover span {
+    background: var(--accent-red);
+}
+
+.navbar.menu-open .hamburger span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.navbar.menu-open .hamburger span:nth-child(2) {
+    opacity: 0;
+}
+
+.navbar.menu-open .hamburger span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+@media (max-width: 900px) {
+    .hamburger {
+        display: flex;
+        position: relative;
+        z-index: 10001;
+    }
+
+    .navbar.menu-open .links {
+        display: flex !important;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.97);
+        justify-content: center;
+        align-items: center;
+        gap: 3rem;
+        z-index: 10000;
+    }
+
+    .navbar.menu-open .links a {
+        font-size: 1.5rem;
+        letter-spacing: 3px;
+    }
 }
 
 /* ===== PAGE TRANSITION OVERLAY (SMX-style) ===== */

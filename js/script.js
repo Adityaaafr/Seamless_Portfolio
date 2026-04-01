@@ -87,6 +87,8 @@ const projectsData = [
 })();
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Activate custom cursor (graceful degradation: default cursor if JS fails)
+    document.body.classList.add('cursor-active');
 
     // --- Intro Gate Logic ---
     const introGate = document.getElementById('intro-gate');
@@ -164,6 +166,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     // --- End Intro Gate ---
+
+    // --- RESTORE MUSIC (when returning from About or skipping intro) ---
+    const isSkippedIntro = document.documentElement.classList.contains('skip-intro');
+    if (isSkippedIntro) {
+        const bgMusic = document.getElementById('bg-music');
+        const savedTime = sessionStorage.getItem('bgMusicTime');
+        const wasPlaying = sessionStorage.getItem('bgMusicPlaying');
+        if (bgMusic && wasPlaying === 'true') {
+            bgMusic.currentTime = parseFloat(savedTime || '0');
+            bgMusic.volume = parseFloat(sessionStorage.getItem('bgMusicVolume') || '0.4');
+            bgMusic.play().catch(e => console.log('Audio autoplay blocked:', e));
+        }
+    }
+
+    // --- SAVE MUSIC STATE before leaving page ---
+    window.addEventListener('beforeunload', () => {
+        const bgMusic = document.getElementById('bg-music');
+        if (bgMusic && !bgMusic.paused) {
+            sessionStorage.setItem('bgMusicTime', bgMusic.currentTime);
+            sessionStorage.setItem('bgMusicPlaying', 'true');
+            sessionStorage.setItem('bgMusicVolume', bgMusic.volume);
+        }
+    });
 
     // --- RETURN FROM ABOUT: Initial State Setup ---
     if (document.documentElement.classList.contains('from-about')) {
@@ -243,6 +268,20 @@ document.addEventListener('DOMContentLoaded', () => {
             cursor.classList.remove('hovering');
         }
     });
+
+    // Hamburger Menu Toggle
+    const hamburger = document.getElementById('hamburger');
+    const navbarEl = document.querySelector('.navbar');
+    if (hamburger && navbarEl) {
+        hamburger.addEventListener('click', () => {
+            navbarEl.classList.toggle('menu-open');
+        });
+        document.querySelectorAll('.navbar .links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navbarEl.classList.remove('menu-open');
+            });
+        });
+    }
 
     // Render Projects
     const projectListEl = document.getElementById('project-list');
